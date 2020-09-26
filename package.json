@@ -4,7 +4,7 @@
   "description": "An application to monitor job postings on glassdoor",
   "main": "index.js",
   "scripts": {
-    "dev": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,5 +19,8 @@
   "homepage": "https://github.com/itmd-web-rtc/job-notifier#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
