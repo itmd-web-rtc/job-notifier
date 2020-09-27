@@ -23,8 +23,8 @@ function homeController() {
           data.push({
             id: $(elm).attr('data-id'),
             title: $(elm).find($('div > .jobHeader')).text(),
-            position: $(elm).find($('div > .jobInfoItem')).text(),
-            location: $(elm).find($('div > div >.loc')).text()
+            position: $(elm).find($('.jobInfoItem')).text(),
+            location: $(elm).find($('div >.loc')).text()
           })
         });
         console.log(data);
