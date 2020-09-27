@@ -1,0 +1,23 @@
+<table class="jobs">
+    <thead>
+      <tr>
+        <th>Sr.No</th>
+        <th>Job Id</th>
+        <th>Comapany Name</th>
+        <th>Position</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+  
+    <tbody>
+      <% for(var i=0; i < jobData.length; i++) { %>
+      <tr>
+        <td><%= i+1 %></td>
+        <td><%= jobData[i].id %></td>
+        <td><%= jobData[i].title %></td>
+        <td><%= jobData[i].position %></td>
+        <td><%= jobData[i].location %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
