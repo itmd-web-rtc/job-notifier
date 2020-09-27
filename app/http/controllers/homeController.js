@@ -46,3 +46,5 @@ let getData = html => {
         }
     }
 }
+
+module.exports = homeController

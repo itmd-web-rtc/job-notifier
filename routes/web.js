@@ -8,4 +8,4 @@ function initRoutes(app){
     
     }
     
-    module.exports = initRoutes
+module.exports = initRoutes
