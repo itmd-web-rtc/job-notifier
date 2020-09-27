@@ -33,6 +33,7 @@ let getData = html => {
   const $ = cheerio.load(html);
   $('.react-job-listing').each((i, elm) => {
       data.push({
+        id: $(elm).attr('data-id'),
         title: $(elm).find($('div > .jobHeader')).text(),
         position: $(elm).find($('div > .jobInfoItem')).text(),
         location: $(elm).find($('div > div >.loc')).text()
