@@ -6,10 +6,16 @@ app.get('/', (req, res) => {
   res.send('Hello World!!!!')
 })
 
+// This code is for testing the scraping must be restructured and organized
+// 
+// 
+
 const siteUrl = "https://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=false&clickSource=searchBtn&typedKeyword=software&locT=C&locId=1128808&jobType=&context=Jobs&sc.keyword=Software+Engineer&dropdown=0";
 
 const axios = require('axios');
 const cheerio = require('cheerio');
+
+const fs = require('fs');
 
 const fetchData = async () => {
   const result = await axios.get(siteUrl);
@@ -30,8 +36,16 @@ let getData = html => {
       })
   });
   console.log(data);
-}
 
+  fs.writeFile('Data.json', JSON.stringify(data),'utf8', (err) => {
+    // throws an error, you could also catch it here
+    if (err) throw err;
+    // success case, the file was saved
+    console.log('Data Saved!');
+  });
+
+}
+// ----END---------------------------
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
