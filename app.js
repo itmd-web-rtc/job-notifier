@@ -17,6 +17,7 @@ const cheerio = require('cheerio');
 
 const fs = require('fs');
 
+//access the site
 const fetchData = async () => {
   const result = await axios.get(siteUrl);
   getData(result.data);
@@ -25,6 +26,8 @@ const fetchData = async () => {
 
 fetchData();
 
+
+//Scrape the data from response
 let getData = html => {
   data = [];
   const $ = cheerio.load(html);
@@ -37,6 +40,7 @@ let getData = html => {
   });
   console.log(data);
 
+  // add data to file
   fs.writeFile('Data.json', JSON.stringify(data),'utf8', (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
