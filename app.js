@@ -25,7 +25,8 @@ let getData = html => {
   $('.react-job-listing').each((i, elm) => {
       data.push({
         title: $(elm).find($('div > .jobHeader')).text(),
-        position: $(elm).find($('div > .jobInfoItem')).text()
+        position: $(elm).find($('div > .jobInfoItem')).text(),
+        location: $(elm).find($('div > div >.loc')).text()
       })
   });
   console.log(data);
