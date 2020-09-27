@@ -5,7 +5,6 @@ function initRoutes(app){
     //Route to index file
     app.get('/', homeController().index);
     
-    
     }
     
 module.exports = initRoutes
