@@ -8,6 +8,7 @@ function homeController() {
       const cheerio = require('cheerio');
       const fs = require('fs');
 
+      data = [];
       //access the site
       const fetchData = async () => {
         const result = await axios.get(siteUrl);
@@ -16,7 +17,7 @@ function homeController() {
 
       //Scrape the data from response
       let getData = html => {
-        data = [];
+        
         const $ = cheerio.load(html);
         $('.react-job-listing').each((i, elm) => {
           data.push({
@@ -34,13 +35,16 @@ function homeController() {
           if (err) throw err;
           // success case, the file was saved
           console.log('Data Saved!');
+          
+          res.render('index', {'jobData' : data});
         });
 
       }
 
       //function fetch the data from website
       fetchData();
-      res.render('./index');
+    
+      
     }
   }
 }
