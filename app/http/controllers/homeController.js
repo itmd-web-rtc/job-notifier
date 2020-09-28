@@ -13,10 +13,12 @@ function homeController() {
         const page = await browser.newPage();
         await page.goto(siteUrl);
         data = [];
+
         const id = await page.evaluate(() => Array.from(document.querySelectorAll('.react-job-listing'), element => element.getAttribute("data-id")));
         const title = await page.evaluate(() => Array.from(document.querySelectorAll('.react-job-listing > div > .jobHeader'), element => element.innerText));
         const pos = await page.evaluate(() => Array.from(document.querySelectorAll('.react-job-listing > div > .jobInfoItem'), element => element.innerText));
         const loc = await page.evaluate(() => Array.from(document.querySelectorAll('.d-flex > .loc'), element => element.innerText));
+        
         for (var i = 0; i < id.length; i++) {
           data.push({
             id: id[i],
@@ -25,7 +27,11 @@ function homeController() {
             location: loc[i]
           });
         }
+
+        const pageNumber = await page.evaluate(() => document.querySelector('#ResultsFooter > .cell').innerText.slice(-2));
+        
         console.log(data.sort((a, b) => parseInt(a.id) - parseInt(b.id)));
+        console.log(pageNumber);
         // add data to file
         fs.writeFile('Data.json', JSON.stringify(data), 'utf8', (err) => {
           // throws an error, you could also catch it here
@@ -38,7 +44,7 @@ function homeController() {
         await browser.close();
       })();
 
-      
+
       // //access the site
       // const fetchData = async () => {
       //   const result = await axios.get(siteUrl);
