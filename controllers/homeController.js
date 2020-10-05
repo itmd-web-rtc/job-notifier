@@ -14,11 +14,12 @@ function homeController() {
           args: ['--disable-dev-shm-usage'],
           timeout: 0
         });
+
+
         const page = await browser.newPage();
+        
         await page.goto(siteUrl);
         
-        
-
         await getData(page)
 
         const pageNumber = await page.evaluate(() => document.querySelector('#ResultsFooter > .cell').innerText.slice(-2));
@@ -41,14 +42,12 @@ function homeController() {
         console.log(pageNumber);
         // add data to file
         await res.render('index', { 'jobData': data });
-        fs.writeFile('Data.json', JSON.stringify(data), 'utf8', (err) => {
-          // throws an error, you could also catch it here
-          if (err) throw err;
-          // success case, the file was saved
-          console.log('Data Saved!');
 
-          
-        });
+        fs.promises.writeFile('Data.json', JSON.stringify(data), {encoding: 'utf8'}).then((err) => { 
+          if (err) throw err;
+          console.log('Data Saved!');
+        })
+
         await page.close();
         await browser.close();
       })();
@@ -58,14 +57,14 @@ function homeController() {
         const title = await page.evaluate(() => Array.from(document.querySelectorAll('.react-job-listing > div > .jobHeader'), element => element.innerText));
         const pos = await page.evaluate(() => Array.from(document.querySelectorAll('.react-job-listing > div > .jobInfoItem'), element => element.innerText));
         const loc = await page.evaluate(() => Array.from(document.querySelectorAll('.d-flex > .loc'), element => element.innerText));
-        for (var i = 0; i < id.length; i++) {
+        id.forEach((ele, i) => {
           data.push({
             id: id[i],
             title: title[i],
             position: pos[i],
             location: loc[i]
           });
-        }
+        });
       }
 
       // //access the site
