@@ -3,8 +3,9 @@ const express = require('express');
 const ejs = require('ejs');
 const expressLayout = require('express-ejs-layouts');
 const fs = require('fs');
-const diffjson = require('diff-json');
+const diffjson = require('diff');
 const {EventEmitter} = require('events');
+const socketIO = require('socket.io');
 
 //get path
 const path = require('path');
@@ -30,42 +31,52 @@ app.set('view engine', 'ejs');
 //import web routes
 require('./routes/web')(app)
 
+const http = require('http')
+
+let server = http.createServer(app) 
+
+let io = socketIO(server) 
+
 //Start server
-app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-});
+server.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+}); 
 
 //Json data change detection logic
 var old_file = fs.readFileSync('Data.json', {encoding:"utf8"});
 var fileEvent = new EventEmitter();
 
-fileEvent.on('changed file', function(data){
-    console.log('The file was changed and fired an event. This data was received:\n' + data);
+
+// send a message on successful socket connection
+// make connection with user from server side 
+io.on('connection', (socket)=>{ 
+  console.log('New user connected'); 
+
+  fileEvent.on('changed file', function(data){
+    socket.emit('diffed changes', data);
   });
+});
+
   
   fs.watch('Data.json', function(eventType, filename) {
     fs.promises.readFile(`${filename}`, {encoding:"utf8"})
       .then(function(data) {
       var new_file = data;
+      newJobList = [];
+      JSON.parse(new_file).forEach(element => {
+        var index = JSON.parse(old_file).findIndex(x => x.id=== element.id);
+
+        if (index === -1){
+          newJobList.push({element});
+        }
+      });
+      
       if(new_file != old_file){
         console.log(`The contents of ${filename} has changed: It was a ${eventType} event.`);
-        var file_changes = diffjson.diff(old_file, new_file);
         
-        console.log(file_changes);
-        
-        var all_changes = file_changes.map((change, i) => {
-          if(change.added) {
-            return `Added: ${change.value}\n`;
-          }
-          if(change.removed) {
-            return `Removed: ${change.value}\n`;
-          }
-        });
-        
-       fileEvent.emit('changed file', all_changes.join('\n'));
+        fileEvent.emit('changed file', newJobList);
       }
       old_file = new_file;
     });
     
   });
-  
