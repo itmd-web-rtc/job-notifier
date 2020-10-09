@@ -42,6 +42,7 @@ function homeController() {
         console.log(pageNumber);
         // add data to file
         await res.render('index', { 'jobData': data });
+        
 
         fs.promises.writeFile('Data.json', JSON.stringify(data), {encoding: 'utf8'}).then((err) => { 
           if (err) throw err;
