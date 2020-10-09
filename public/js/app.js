@@ -126,7 +126,14 @@ module.exports = __webpack_require__(/*! /Users/abm2018/Documents/Dhiraj/GitHub/
 
 var socket=io() 
 
+var table = document.getElementById("new-jobs");
+
 // make connection with server from user side 
 socket.on('diffed changes', function(data){
   console.log(`File changed: ${data}`);
+  table.innerHTML += "<thead><tr><th>Sr.No</th><th>Job Id</th><th>Comapany Name</th><th>Position</th><th>Location</th></tr></thead><tbody></tbody>";
+  // data.forEach(element => {
+  //   con
+  // });
 });
+

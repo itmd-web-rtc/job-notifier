@@ -57,26 +57,24 @@ io.on('connection', (socket)=>{
   });
 });
 
-
-
   
   fs.watch('Data.json', function(eventType, filename) {
     fs.promises.readFile(`${filename}`, {encoding:"utf8"})
       .then(function(data) {
       var new_file = data;
-      a = [];
+      newJobList = [];
       JSON.parse(new_file).forEach(element => {
         var index = JSON.parse(old_file).findIndex(x => x.id=== element.id);
 
         if (index === -1){
-          a.push({element});
+          newJobList.push({element});
         }
       });
       
       if(new_file != old_file){
         console.log(`The contents of ${filename} has changed: It was a ${eventType} event.`);
-        //var file_changes = diffjson.diffArrays(old_file, new_file);
-        fileEvent.emit('changed file', JSON.stringify(a));
+        
+        fileEvent.emit('changed file', newJobList);
       }
       old_file = new_file;
     });
