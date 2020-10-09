@@ -126,7 +126,7 @@ module.exports = __webpack_require__(/*! /Users/abm2018/Documents/Dhiraj/GitHub/
 
 var socket=io() 
 
-var table = document.getElementById("new-jobs");
+var table = document.getElementById("job-table");
 
 var permission = Notification.permission;
 
@@ -149,14 +149,24 @@ if (Notification.permission !== 'denied' || Notification.permission === "default
 // make connection with server from user side 
 socket.on('diffed changes', function(data){
   console.log(`File changed: ${data}`);
- 
+  
   if(permission === "granted"){
     var notification = new Notification('New Job was added!!', options);
   }
+  
+  tbody = table.getElementsByTagName('tbody')[0];
+  data.forEach(eachRow => {
+    newRow = tbody.insertRow(0)
+    newRow.style.background = "#FFE77AFF"
+    let td = document.createElement("td");
+    td.innerHTML = "NEW"
+    newRow.appendChild(td);
+    for (const property in eachRow) {
+      td = document.createElement("td");
+      td.innerHTML = eachRow[property]
+      newRow.appendChild(td);
+    }
+  });
 
-  table.innerHTML += "<thead><tr><th>Sr.No</th><th>Job Id</th><th>Comapany Name</th><th>Position</th><th>Location</th></tr></thead><tbody></tbody>";
-  // data.forEach(element => {
-  //   con
-  // });
 });
 
