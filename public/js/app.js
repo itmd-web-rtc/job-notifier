@@ -152,6 +152,14 @@ socket.on('diffed changes', function(data){
   
   if(permission === "granted"){
     var notification = new Notification('New Job was added!!', options);
+    console.log(Notification.permission);
+    // This will output: granted, default or denied
+  }
+
+  if(permission !== 'granted'){
+    throw new Error('Permission not granted for Notification');
+    console.log(Notification.permission);
+    // This will output: granted, default or denied
   }
   
   tbody = table.getElementsByTagName('tbody')[0];
