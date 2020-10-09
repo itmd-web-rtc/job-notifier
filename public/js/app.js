@@ -128,8 +128,32 @@ var socket=io()
 
 var table = document.getElementById("job-table");
 
+var permission = Notification.permission;
+
+var options = {
+  body: "Data"
+}
+if (!("Notification" in window)) {
+  console.log("This browser does not support desktop notification");
+}
+
+if (Notification.permission !== 'denied' || Notification.permission === "default") {
+  Notification.requestPermission(function (permission) {
+    // If the user accepts, let's create a notification
+    if (permission === "granted") {
+      console.log("permission granted");
+    }
+  });
+}
+
 // make connection with server from user side 
 socket.on('diffed changes', function(data){
+  console.log(`File changed: ${data}`);
+  
+  if(permission === "granted"){
+    var notification = new Notification('New Job was added!!', options);
+  }
+  
   tbody = table.getElementsByTagName('tbody')[0];
   data.forEach(eachRow => {
     newRow = tbody.insertRow(0)
@@ -143,5 +167,6 @@ socket.on('diffed changes', function(data){
       newRow.appendChild(td);
     }
   });
+
 });
 
