@@ -67,7 +67,7 @@ io.on('connection', (socket)=>{
         var index = JSON.parse(old_file).findIndex(x => x.id=== element.id);
 
         if (index === -1){
-          newJobList.push({element});
+          newJobList.push(element);
         }
       });
       
