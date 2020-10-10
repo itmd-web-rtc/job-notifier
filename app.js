@@ -3,12 +3,14 @@ const express = require('express');
 const ejs = require('ejs');
 const expressLayout = require('express-ejs-layouts');
 const fs = require('fs');
-const diffjson = require('diff');
 const {EventEmitter} = require('events');
 const socketIO = require('socket.io');
 const webpush = require('web-push');
 const webRouter = require('./routes/web');
+const schedule = require('node-schedule');
 const subscriptionRouter = require('./routes/subscription');
+const scheduleScraping = require('./controllers/scheduleScraping');
+
 require('dotenv').config();
 
 //get path
@@ -115,10 +117,15 @@ io.on('connection', (socket)=>{
       .catch(function(error) {
         console.error('Error: ', error);
       });
-
         fileEvent.emit('changed file', newJobList);
       }
       old_file = new_file;
     });
     
   });
+
+  
+  var t = schedule.scheduleJob('*/10 * * * *', function(){
+    scheduleScraping(); 
+ });
+ 
