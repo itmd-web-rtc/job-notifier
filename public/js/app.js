@@ -201,7 +201,7 @@ if ('serviceWorker' in navigator) {
               console.error('Permission error:', error);
             });
         });
-        document.querySelector('body').append(notify_me_button);
+        document.getElementById('notify_button').append(notify_me_button);
       }
 
     })
